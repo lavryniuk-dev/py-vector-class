@@ -5,20 +5,20 @@ import math
 
 class Vector:
 
-    def __init__(self, x: float, y: float) -> None:
-        self.x = round(x, 2)
-        self.y = round(y, 2)
+    def __init__(self, axes_x: float, axes_y: float) -> None:
+        self.x = round(axes_x, 2)
+        self.y = round(axes_y, 2)
 
     def __add__(self, other: Vector | int | float) -> Vector:
         return Vector(
-            self.x + (other.x if isinstance(other, Vector) else other),
-            self.y + (other.y if isinstance(other, Vector) else other),
+            self.x + getattr(other, "x", other),
+            self.y + getattr(other, "y", other),
         )
 
     def __sub__(self, other: Vector | int | float) -> Vector:
         return Vector(
-            self.x - (other.x if isinstance(other, Vector) else other),
-            self.y - (other.y if isinstance(other, Vector) else other),
+            self.x - getattr(other, "x", other),
+            self.y - getattr(other, "y", other),
         )
 
     def __mul__(self, other: Vector | int | float) -> Vector | float:
@@ -31,10 +31,10 @@ class Vector:
     def create_vector_by_two_points(cls,
                                     start_point: tuple,
                                     end_point: tuple) -> Vector:
-        x = end_point[0] - start_point[0]
-        y = end_point[1] - start_point[1]
+        axes_x = end_point[0] - start_point[0]
+        axes_y = end_point[1] - start_point[1]
 
-        return cls(x, y)
+        return cls(axes_x, axes_y)
 
     def get_length(self) -> float:
         return self.magnitude()
